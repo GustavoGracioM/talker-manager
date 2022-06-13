@@ -60,4 +60,15 @@ router.put('/:id',
     res.status(200).json(editTalker);
 });
 
+router.delete('/:id', 
+  validationToken,
+  getTalker,
+  (req, res) => {
+    const { talker } = req;
+    const id = Number(req.params.id);  
+    const newListTalker = talker.filter((t) => t.id !== id);
+    fs.writeFileSync('./talker.json', JSON.stringify(newListTalker));
+    res.status(204).end();
+});
+
 module.exports = router;
