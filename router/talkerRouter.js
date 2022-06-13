@@ -11,6 +11,19 @@ const {
 
 const router = express.Router();
 
+router.get('/search', 
+  validationToken,
+  getTalker,
+  (req, res) => {
+    const { talker } = req;
+    const { q } = req.query;
+    if (!q) return res.status(200).json(talker);
+    const listTalker = talker.filter((t) => t.name.includes(q));
+    console.log(listTalker);
+    if (!listTalker) return res.status(200).json([]);
+    res.status(200).json(listTalker);
+});
+
 router.get('/', getTalker, (req, res) => {
   const { talker } = req;
   res.status(200).json(talker);
@@ -19,9 +32,9 @@ router.get('/', getTalker, (req, res) => {
 router.get('/:id', getTalker, (req, res) => {
   const { talker } = req;
   const { id } = req.params;
-  const x = talker.find((t) => t.id === Number(id));
-  if (!x) return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
-  res.status(200).json(x);
+  const talk = talker.find((t) => t.id === Number(id));
+  if (!talk) return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+  res.status(200).json(talk);
 });
 
 router.post('/', 
