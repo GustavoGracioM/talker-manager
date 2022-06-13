@@ -24,6 +24,7 @@ const validationPassword = (req, res, next) => {
 
 router.post('/', validationEmail, validationPassword, (req, res) => {
   const token = randtoken.generate(16);
+  req.headers.authorization = token;
   return res.status(200).json({ token });
 });
 
