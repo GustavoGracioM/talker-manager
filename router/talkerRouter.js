@@ -39,8 +39,25 @@ router.post('/',
     const newTalk = { name, age, id, talk };
     talker.push(newTalk);
     fs.writeFileSync('./talker.json', JSON.stringify(talker));
-    console.log(fs.readFileSync('./talker.json', 'utf-8'));
     res.status(201).json(newTalk);
+});
+
+router.put('/:id',
+  validationToken, 
+  validationName, 
+  validationAge, 
+  validationTalk, 
+  validateWachedAt, 
+  validateRate,
+  getTalker, 
+  (req, res) => {
+    const { talker } = req;
+    const id = Number(req.params.id);
+    const { name, age, talk } = req.body;
+    const editTalker = { name, age, id, talk };
+    const listTalker = talker.map((t) => (t.id === id ? editTalker : t));
+    fs.writeFileSync('./talker.json', JSON.stringify(listTalker));
+    res.status(200).json(editTalker);
 });
 
 module.exports = router;
